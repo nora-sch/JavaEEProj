@@ -10,7 +10,7 @@
 <header></header>
 <main>
 <div class="main-wrapper">
-<a href="#">Ajouter un nouveau repas</a>
+<a href="<%=request.getContextPath()%>/ajoutrepas">Ajouter un nouveau repas</a>
 <a href="#">Visualiser les repas</a>
 </div>
 </main>
