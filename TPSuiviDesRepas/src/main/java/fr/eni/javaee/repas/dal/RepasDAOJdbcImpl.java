@@ -1,0 +1,67 @@
+package fr.eni.javaee.repas.dal;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import fr.eni.javaee.repas.bo.Aliment;
+import fr.eni.javaee.repas.bo.Repas;
+
+public class RepasDAOJdbcImpl implements RepasDAO{
+	private static final String INSERT_REPAS = "INSERT INTO REPAS(date, heure) VALUES(?,?);";
+	private static final String INSERT_ALIMENTS = "INSERT INTO ALIMENTS(idRepas, nom) VALUES(?,?);";
+
+	public void insert(Repas repas) {
+		Connection cnx = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		try {
+			cnx = ConnectionProvider.getConnection();
+			pstmt = cnx.prepareStatement(INSERT_REPAS, PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt.setDate(1, java.sql.Date.valueOf(repas.getDate()));
+			pstmt.setTime(2, java.sql.Time.valueOf(repas.getHeure()));
+			pstmt.executeUpdate();
+			rs = pstmt.getGeneratedKeys();
+			if(rs.next()) {
+				repas.setIdRepas(rs.getInt(1));
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = cnx.prepareStatement(INSERT_ALIMENTS, PreparedStatement.RETURN_GENERATED_KEYS);
+			for(Aliment aliment : repas.getListeAliments()) {
+				pstmt.setInt(1, repas.getIdRepas());
+				pstmt.setString(2, aliment.getNom());
+				pstmt.executeUpdate();
+				rs = pstmt.getGeneratedKeys();
+				if(rs.next()) {
+					aliment.setIdAliment(rs.getInt(1));
+				}
+
+				rs.close();
+				pstmt.close();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				cnx.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}
