@@ -9,8 +9,8 @@ import fr.eni.javaee.repas.bo.Aliment;
 import fr.eni.javaee.repas.bo.Repas;
 
 public class RepasDAOJdbcImpl implements RepasDAO{
-	private static final String INSERT_REPAS = "INSERT INTO REPAS(date, heure) VALUES(?,?);";
-	private static final String INSERT_ALIMENTS = "INSERT INTO ALIMENTS(idRepas, nom) VALUES(?,?);";
+	private static final String INSERT_REPAS = "INSERT INTO REPAS(date_repas, heure_repas) VALUES(?,?);";
+	private static final String INSERT_ALIMENTS = "INSERT INTO ALIMENTS(nom, id_repas) VALUES(?,?);";
 
 	public void insert(Repas repas) {
 		Connection cnx = null;
@@ -28,19 +28,19 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 			}
 			rs.close();
 			pstmt.close();
+
 			pstmt = cnx.prepareStatement(INSERT_ALIMENTS, PreparedStatement.RETURN_GENERATED_KEYS);
 			for(Aliment aliment : repas.getListeAliments()) {
-				pstmt.setInt(1, repas.getIdRepas());
-				pstmt.setString(2, aliment.getNom());
+				pstmt.setString(1, aliment.getNom());
+				pstmt.setInt(2, repas.getIdRepas());
 				pstmt.executeUpdate();
 				rs = pstmt.getGeneratedKeys();
 				if(rs.next()) {
 					aliment.setIdAliment(rs.getInt(1));
 				}
-
-				rs.close();
-				pstmt.close();
 			}
+			rs.close();
+			pstmt.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

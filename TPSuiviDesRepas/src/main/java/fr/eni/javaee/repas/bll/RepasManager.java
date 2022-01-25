@@ -13,8 +13,8 @@ import fr.eni.javaee.repas.dal.DAOFactory;
 
 public class RepasManager {
 
-private RepasDAO repasDAO;
-	
+	private RepasDAO repasDAO;
+
 	/**
 	 * Le consructeur permet d'initialiser la variable memebre avisDAO pour
 	 * permettre une communication avec la bdd
@@ -22,7 +22,7 @@ private RepasDAO repasDAO;
 	public RepasManager() {
 		this.repasDAO = DAOFactory.getRepasDAO();
 	}
-	
+
 	/**
 	 * @param date
 	 * @param heure
@@ -30,13 +30,13 @@ private RepasDAO repasDAO;
 	 * @return un objet Repas en cas de succès
 	 */
 	public Repas ajouter(LocalDate date, LocalTime heure, List<String> aliments){
-		
-		List<Aliment> listeAliments = new ArrayList<Aliment>();
-		for(String aliment : aliments) {
-			listeAliments.add(new Aliment(aliment));
+		Repas repas = new Repas();
+		repas.setDate(date);
+		repas.setHeure(heure);
+		for(String aliment:aliments)
+		{
+			repas.getListeAliments().add(new Aliment(aliment.trim()));
 		}
-		
-		Repas repas = new Repas(date, heure, listeAliments);
 		this.repasDAO.insert(repas);
 		return repas;
 	}

@@ -11,7 +11,7 @@
 <main>
 <div class="main-wrapper">
 <a href="<%=request.getContextPath()%>/ajoutrepas">Ajouter un nouveau repas</a>
-<a href="#">Visualiser les repas</a>
+<a href="<%=request.getContextPath()%>/repas">Visualiser les repas</a>
 </div>
 </main>
 <footer>

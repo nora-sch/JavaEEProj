@@ -12,6 +12,7 @@ public class Repas {
 	private List<Aliment> listeAliments = new ArrayList<Aliment>();
 
 	public Repas() {
+//		this.listeAliments = new ArrayList<Aliment>();
 	}
 	public Repas(LocalDate date, LocalTime heure, List<Aliment> listeAliments) {
 		super();

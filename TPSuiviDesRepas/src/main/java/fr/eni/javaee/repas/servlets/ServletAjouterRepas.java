@@ -23,13 +23,13 @@ import fr.eni.javaee.repas.bo.Repas;
  * Servlet implementation class ServletAjoutRepas
  */
 @WebServlet("/ajoutrepas")
-public class ServletAjoutRepas extends HttpServlet {
+public class ServletAjouterRepas extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ServletAjoutRepas() {
+	public ServletAjouterRepas() {
 		super();
 	}
 

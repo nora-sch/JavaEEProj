@@ -25,6 +25,7 @@ maxWaitMillis="10000"
 ```
 
 **Creation of the tables in SQL**
+
 ```java
 CREATE TABLE REPAS
 (
