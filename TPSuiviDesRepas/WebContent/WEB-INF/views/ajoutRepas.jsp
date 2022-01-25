@@ -24,8 +24,8 @@
 		<%=request.getParameter("aliments") != null ? request.getParameter("aliments") :""%>
 		</textarea>
 				<br /> <input type="submit" value="Valider" /> <a
-					href="<%=request.getContextPath()%>"><input type="button"
-					value="Annuler" /></a>
+					href="<%=request.getContextPath()%>/ajoutrepas"><input type="button"
+					value="Effacer" /></a>
 			</form>
 			<a href="./">Retour à l'accueil</a> <a href="./repas">Voir la
 				liste de repas</a>

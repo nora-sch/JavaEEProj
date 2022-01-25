@@ -43,4 +43,7 @@ public class RepasManager {
 	public List<Repas> selectAll() {
 		return this.repasDAO.selectAll();
 	}
+	public List<Repas> selectByDate(LocalDate date) {
+		return this.repasDAO.selectByDate(date);
+	}
 }
