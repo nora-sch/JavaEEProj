@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+:root { 
+	--background-color-1: salmon; 
+	--background-color-2: white; 
+	--text: black; 
+	--linkDark: salmon; 
+	--linkLight: white; 
+}
+
+body {
+	margin: 0;
+	padding: 0
+}
+
+main {
+	width: 100%;
+	padding-bottom: 40px;
+	background-color:var(--background-color-2);
+}
+
+header{
+	background-color:var(--background-color-1);
+	height:10em;
+	margin-bottom:1em;
+}
+/* unvisited link */
+a:link {
+	color: var(--linkLight);
+	text-decoration: none;
+}
+main a:link {
+	color: var(--linkDark);
+}
+
+/* visited link */
+a:visited {
+	color: var(--linkLight);
+}
+main a:visited {
+	color: var(--linkDark);
+}
+
+/* mouse over link */
+a:hover {
+	color: var(--linkLight);
+}
+main a:hover {
+	color: var(--linkDark);
+}
+
+/* selected link */
+a:active {
+	color: var(--linkLight);
+}
+main a:active {
+	color: var(--linkDark);
+}
+
+.main-wrapper{
+	width:80%;
+	margin:auto;
+	padding:auto;
+}
+.flex-box{
+	display : flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.flex-box-center{
+		display : flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.first-page-button{
+	height:5em;
+	width:175px;
+	border-radius: 1em;
+	margin:1em;
+	border:none;
+	box-shadow:  3px 3px 3px grey, -3px 0 .4em lightgrey;
+	
+}
+
+.list-container{
+	width:45%;
+	margin:1em;
+}
+footer {
+	background-color:salmon;
+	position: relative;
+	bottom: 10px;
+	width: 100%;
+	height: 40px;
+	padding: 0 5px;
+	margin-top:10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
