@@ -40,4 +40,7 @@ public class RepasManager {
 		this.repasDAO.insert(repas);
 		return repas;
 	}
+	public List<Repas> selectAll() {
+		return this.repasDAO.selectAll();
+	}
 }

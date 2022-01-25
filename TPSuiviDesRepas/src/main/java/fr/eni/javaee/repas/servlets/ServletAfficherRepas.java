@@ -1,6 +1,7 @@
 package fr.eni.javaee.repas.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fr.eni.javaee.repas.bll.RepasManager;
+import fr.eni.javaee.repas.bo.Repas;
 
 /**
  * Servlet implementation class ServletAfficherRepas
@@ -28,9 +32,9 @@ public class ServletAfficherRepas extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-		//TODO 
-		
+		RepasManager repasManager = new RepasManager();
+		List<Repas> listeRepas =  repasManager.selectAll();
+		request.setAttribute("listeRepas", listeRepas);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/afficherRepas.jsp");
 		rd.forward(request, response);	}
 

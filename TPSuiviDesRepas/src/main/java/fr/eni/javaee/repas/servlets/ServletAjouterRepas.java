@@ -58,7 +58,7 @@ public class ServletAjouterRepas extends HttpServlet {
 
 			RepasManager repasManager = new RepasManager();
 			Repas repas = repasManager.ajouter(date, heure, aliments);
-			//			request.setAttribute("repas", repas);
+			request.setAttribute("repas", repas);
 		}catch(Exception e) {
 		e.printStackTrace();
 		}
