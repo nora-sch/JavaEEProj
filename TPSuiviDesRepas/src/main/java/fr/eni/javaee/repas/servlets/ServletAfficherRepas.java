@@ -38,7 +38,7 @@ public class ServletAfficherRepas extends HttpServlet {
 		try {
 			RepasManager repasManager = new RepasManager();
 			List<Repas> listeRepas =  repasManager.selectAll();
-			System.out.println(listeRepas);
+//			System.out.println(listeRepas);
 			request.setAttribute("listeRepas", listeRepas);
 
 			if(request.getParameter("date")!=null && !request.getParameter("date").equals("")) {

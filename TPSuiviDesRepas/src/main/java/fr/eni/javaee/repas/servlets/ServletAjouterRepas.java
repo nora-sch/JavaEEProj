@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.javaee.repas.BusinessException;
 import fr.eni.javaee.repas.bll.RepasManager;
 import fr.eni.javaee.repas.bo.Aliment;
 import fr.eni.javaee.repas.bo.Repas;
@@ -46,24 +48,49 @@ public class ServletAjouterRepas extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		LocalDate date;
-		LocalTime heure;
-		List<String> aliments;
+		LocalDate date = null;
+		LocalTime heure = null;
+		String aliments = null;
+		List<Integer> listeErreurs = new ArrayList<Integer>();
 		try {
 			DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			date = LocalDate.parse(request.getParameter("date"),formatDate);
+		}catch(DateTimeParseException e){
+			listeErreurs.add(CodesResultatServlets.FORMAT_REPAS_DATE_ERREUR);
+		}
+		try {
 			DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH:mm");
 			heure = LocalTime.parse(request.getParameter("heure"),formatHeure);
-			aliments = Arrays.asList((request.getParameter("aliments")).split(","));
-
-			RepasManager repasManager = new RepasManager();
-			Repas repas = repasManager.ajouter(date, heure, aliments);
-			request.setAttribute("repas", repas);
-		}catch(Exception e) {
-		e.printStackTrace();
+		}catch(DateTimeParseException e) {
+			listeErreurs.add(CodesResultatServlets.FORMAT_REPAS_HEURE_ERREUR);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/ajoutRepas.jsp");
-		rd.forward(request, response);
+
+		aliments = (String) request.getParameter("aliments");
+		if(aliments==null || aliments.trim().isEmpty()){
+			listeErreurs.add(CodesResultatServlets.FORMAT_REPAS_ALIMENTS_ERREUR);
+		}
+
+		if(listeErreurs.size()>0) {
+			request.setAttribute("listeCodesErreur", listeErreurs);
+			System.out.println(listeErreurs);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/ajoutRepas.jsp");
+			rd.forward(request, response);
+		}
+		else {
+			try {
+				RepasManager repasManager = new RepasManager();
+				Repas repas = repasManager.ajouter(date, heure, Arrays.asList(aliments.split(",")));
+				request.setAttribute("repas", repas);
+			}catch(BusinessException e) {
+				e.printStackTrace();
+				request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+				System.out.println(e.getListeCodesErreur());
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/ajoutRepas.jsp");
+				rd.forward(request, response);
+			}
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/ajoutRepas.jsp");
+			rd.forward(request, response);
+		}
 	}
 }
 
