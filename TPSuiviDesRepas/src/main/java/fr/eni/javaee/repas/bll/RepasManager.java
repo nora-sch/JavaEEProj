@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.javaee.repas.BusinessException;
 import fr.eni.javaee.repas.bo.Aliment;
 import fr.eni.javaee.repas.bo.Repas;
 import fr.eni.javaee.repas.dal.DAOFactory;
@@ -28,8 +29,9 @@ public class RepasManager {
 	 * @param heure
 	 * @param List<Aliment> listeAliments
 	 * @return un objet Repas en cas de succès
+	 * @throws BusinessException 
 	 */
-	public Repas ajouter(LocalDate date, LocalTime heure, List<String> aliments){
+	public Repas ajouter(LocalDate date, LocalTime heure, List<String> aliments) throws BusinessException{
 		Repas repas = new Repas();
 		repas.setDate(date);
 		repas.setHeure(heure);
@@ -42,10 +44,10 @@ public class RepasManager {
 		this.repasDAO.insert(repas);
 		return repas;
 	}
-	public List<Repas> selectAll() {
+	public List<Repas> selectAll() throws BusinessException {
 		return this.repasDAO.selectAll();
 	}
-	public List<Repas> selectByDate(LocalDate date) {
+	public List<Repas> selectByDate(LocalDate date) throws BusinessException {
 		return this.repasDAO.selectByDate(date);
 	}
 }

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.javaee.repas.BusinessException;
 import fr.eni.javaee.repas.bo.Aliment;
 import fr.eni.javaee.repas.bo.Repas;
 
@@ -17,45 +18,57 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 	// TODO INNER JOIN TO FULL JOIN? - on affiche des repas sans aliments aussi?
 	private static final String SELECT_ALL = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r FULL JOIN ALIMENTS a ON r.id=a.id_repas ORDER BY r.date_repas DESC, r.heure_repas DESC";
 	private static final String SELECT_BY_DATE = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r FULL JOIN ALIMENTS a ON r.id=a.id_repas WHERE r.date_repas = ? ORDER BY r.date_repas DESC, r.heure_repas DESC";
-	public void insert(Repas repas) {
+
+
+	public void insert(Repas repas) throws BusinessException {
 		Connection cnx = null;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
+
+		if(repas==null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJECT_NULL);
+			throw businessException;
+		}
+
 		try {
 			cnx = ConnectionProvider.getConnection();
-			cnx.setAutoCommit(false);
-			pstmt = cnx.prepareStatement(INSERT_REPAS, PreparedStatement.RETURN_GENERATED_KEYS);
-			pstmt.setDate(1, java.sql.Date.valueOf(repas.getDate()));
-			pstmt.setTime(2, java.sql.Time.valueOf(repas.getHeure()));
-			pstmt.executeUpdate();
-			rs = pstmt.getGeneratedKeys();
-			if(rs.next()) {
-				repas.setIdRepas(rs.getInt(1));
-			}
-			rs.close();
-			pstmt.close();
-
-			pstmt = cnx.prepareStatement(INSERT_ALIMENTS, PreparedStatement.RETURN_GENERATED_KEYS);
-			for(Aliment aliment : repas.getListeAliments()) {
-				pstmt.setString(1, aliment.getNom());
-				pstmt.setInt(2, repas.getIdRepas());
+			try {
+				cnx.setAutoCommit(false);
+				pstmt = cnx.prepareStatement(INSERT_REPAS, PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt.setDate(1, java.sql.Date.valueOf(repas.getDate()));
+				pstmt.setTime(2, java.sql.Time.valueOf(repas.getHeure()));
 				pstmt.executeUpdate();
 				rs = pstmt.getGeneratedKeys();
 				if(rs.next()) {
-					aliment.setIdAliment(rs.getInt(1));
+					repas.setIdRepas(rs.getInt(1));
 				}
-			}
-			rs.close();
-			pstmt.close();
-			cnx.commit();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			try {
+				rs.close();
+				pstmt.close();
+
+				pstmt = cnx.prepareStatement(INSERT_ALIMENTS, PreparedStatement.RETURN_GENERATED_KEYS);
+				for(Aliment aliment : repas.getListeAliments()) {
+					pstmt.setString(1, aliment.getNom());
+					pstmt.setInt(2, repas.getIdRepas());
+					pstmt.executeUpdate();
+					rs = pstmt.getGeneratedKeys();
+					if(rs.next()) {
+						aliment.setIdAliment(rs.getInt(1));
+					}
+				}
+				rs.close();
+				pstmt.close();
+				cnx.commit();
+			}catch(Exception e) {
+				e.printStackTrace();
 				cnx.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+				throw e;
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
+			throw businessException;			
 		}finally{
 			try {
 				cnx.close();
@@ -77,7 +90,7 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 	}
 
 	@Override
-	public List<Repas> selectAll() {
+	public List<Repas> selectAll() throws BusinessException{
 		List<Repas> listeRepas  = new ArrayList<Repas>();
 		Connection cnx = null;
 		ResultSet rs = null;
@@ -105,6 +118,9 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.LECTURE_REPAS_ECHEC);
+			throw businessException;
 		}finally{
 			try {
 				cnx.close();
@@ -124,9 +140,9 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 		}
 		return listeRepas;
 	}
-	
+
 	@Override
-	public List<Repas> selectByDate(LocalDate dateRecherchee) {
+	public List<Repas> selectByDate(LocalDate dateRecherchee) throws BusinessException {
 		List<Repas> listeRepas  = new ArrayList<Repas>();
 		Connection cnx = null;
 		ResultSet rs = null;
@@ -155,6 +171,9 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.LECTURE_REPAS_ECHEC);
+			throw businessException;
 		}finally{
 			try {
 				cnx.close();
