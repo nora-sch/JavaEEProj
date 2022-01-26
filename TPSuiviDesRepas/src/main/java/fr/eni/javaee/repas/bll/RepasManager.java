@@ -34,8 +34,10 @@ public class RepasManager {
 		repas.setDate(date);
 		repas.setHeure(heure);
 		for(String aliment:aliments)
-		{
+			//TODO à changer sans if mais dans exceptions!
+		{if(aliment!=""){
 			repas.getListeAliments().add(new Aliment(aliment.trim()));
+			}
 		}
 		this.repasDAO.insert(repas);
 		return repas;

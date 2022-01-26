@@ -6,6 +6,7 @@
 	--text: black; 
 	--linkDark: salmon; 
 	--linkLight: white; 
+	--disabled: lightgrey;
 }
 
 body {
@@ -100,4 +101,13 @@ footer {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.disabled{
+  pointer-events: none;
+  cursor: default;
+  color: var(--disabled);
+}
+a.disabled{
+	  color: var(--disabled);
 }

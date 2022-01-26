@@ -14,8 +14,9 @@ import fr.eni.javaee.repas.bo.Repas;
 public class RepasDAOJdbcImpl implements RepasDAO{
 	private static final String INSERT_REPAS = "INSERT INTO REPAS(date_repas, heure_repas) VALUES(?,?);";
 	private static final String INSERT_ALIMENTS = "INSERT INTO ALIMENTS(nom, id_repas) VALUES(?,?);";
-	private static final String SELECT_ALL = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r INNER JOIN ALIMENTS a ON r.id=a.id_repas ORDER BY r.date_repas DESC, r.heure_repas DESC";
-	private static final String SELECT_BY_DATE = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r INNER JOIN ALIMENTS a ON r.id=a.id_repas WHERE r.date_repas = ? ORDER BY r.date_repas DESC, r.heure_repas DESC";
+	// TODO INNER JOIN TO FULL JOIN? - on affiche des repas sans aliments aussi?
+	private static final String SELECT_ALL = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r FULL JOIN ALIMENTS a ON r.id=a.id_repas ORDER BY r.date_repas DESC, r.heure_repas DESC";
+	private static final String SELECT_BY_DATE = "SELECT r.id as id_repas, r.date_repas, r.heure_repas, a.id as id_aliment, a.nom FROM REPAS r FULL JOIN ALIMENTS a ON r.id=a.id_repas WHERE r.date_repas = ? ORDER BY r.date_repas DESC, r.heure_repas DESC";
 	public void insert(Repas repas) {
 		Connection cnx = null;
 		ResultSet rs = null;
