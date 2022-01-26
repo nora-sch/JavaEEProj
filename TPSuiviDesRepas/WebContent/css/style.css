@@ -103,11 +103,15 @@ footer {
 	justify-content: center;
 }
 
-.disabled{
+/* .disabled{
   pointer-events: none;
   cursor: default;
   color: var(--disabled);
 }
 a.disabled{
 	  color: var(--disabled);
+} */
+
+.error-msg{
+	color:red;
 }

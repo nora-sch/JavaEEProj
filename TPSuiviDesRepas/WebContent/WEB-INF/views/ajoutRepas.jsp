@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="fr.eni.javaee.repas.bo.Repas"%>
+<%@ page import="fr.eni.javaee.repas.messages.LecteurMessage"%>
+<%@page import="fr.eni.javaee.repas.bo.Aliment"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +20,7 @@
 		<div class="main-wrapper">
 			<div class="form-wrapper">
 				<h3>AJOUT</h3>
+	
 				<form action="<%=request.getContextPath()%>/ajoutrepas"
 					method="post">
 
@@ -30,14 +34,35 @@
 						href="<%=request.getContextPath()%>/ajoutrepas"><input
 						type="button" value="Effacer" /></a>
 				</form>
-			
+				<%
+			List<Integer> listeCodesErreur = (List<Integer>)request.getAttribute("listeCodesErreur");
+			if(listeCodesErreur!=null)
+			{
+		%>
+				<p class="error-msg">Erreur, le repas n'a pas pu être ajouté :</p>
+				<ul>
+		<%
+				for(int codeErreur:listeCodesErreur)
+				{
+		%>
+					<li class="error-msg"><%=LecteurMessage.getMessageErreur(codeErreur)%></li>
+			<% } %>
+			</ul>
+		<% } %>
 			</div>
 			<aside>
 				<%
 				Repas repas = (Repas) request.getAttribute("repas");
 				if (repas != null) {
 				%>
-				<p><%=repas.toString()%></p>
+				<p><%=repas.getDate()%></p>
+				<p><%=repas.getHeure()%></p>
+				<ul>
+				<% for(Aliment aliment : repas.getListeAliments()){
+					%>
+					<li><%=aliment.getNom()%></li>
+				<% }%>
+				</ul>
 				<%
 				}
 				%>
