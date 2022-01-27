@@ -26,6 +26,10 @@ body {
 option, select, input{
  font-family: 'Varela Round', sans-serif;
 }
+#nbAcess{
+font-size:1.5em;
+font-weight:bold;
+}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,5 +54,8 @@ option, select, input{
 						
 						<input type="submit" value="Valider" /> 
 										</form>
+										
+				 <%	Cookie cookieNbAcces= (Cookie) request.getAttribute("cookieNbAcces");%>		
+				 <p>Vous avez vu cette page <span id="nbAcess"><%=cookieNbAcces.getValue()%></span> fois</p>			
 </body>
 </html>
