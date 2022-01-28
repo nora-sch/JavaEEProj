@@ -9,7 +9,9 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <title>Accueil</title>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 <!-- Custom styles for this template -->
 <%-- <link href="<%=request.getContextPath() %>/css/style.css" rel="stylesheet"/> --%>
 <%--   <%@ include file="../../css/style.css"%> --%>
@@ -18,7 +20,7 @@
   </style> 
 </head>
 <body>
-	<header></header>
+	<header><h1 class="page-title">SUIVI DES REPAS</h1></header>
 	<main>
 		<div class="main-wrapper">
 		<div class="flex-box-center">

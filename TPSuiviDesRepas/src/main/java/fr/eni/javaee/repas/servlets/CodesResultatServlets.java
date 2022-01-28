@@ -19,4 +19,9 @@ public abstract class CodesResultatServlets {
 	 * Format  Repas.listeAliments incorrect
 	 */
 	public static final int FORMAT_REPAS_ALIMENTS_ERREUR = 30002;
+	
+	/**
+	 * Format  Repas.listeAliments incorrect - des caractères interdits
+	 */
+	public static final int FORMAT_REPAS_ALIMENTS_SYNTAXE_ERREUR = 30003;
 }

@@ -3,24 +3,27 @@
 <%@ page import="fr.eni.javaee.repas.bo.Repas"%>
 <%@page import="fr.eni.javaee.repas.bo.Aliment"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="fr.eni.javaee.repas.messages.LecteurMessage"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Liste de repas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 <!-- Custom styles for this template -->
 <style>
 <%@ include file="../../css/style.css"%>
 </style>
 </head>
 <body>
-	<header></header>
+	<header><h1 class="page-title">LISTE DE REPAS</h1></header>
 	<main>
 		<div class="main-wrapper">
 <div class = "flex-box">
 			<div class="list-container">
-				<h3>LISTE DE REPAS</h3>
 				<table>
 			<thead>
 				<tr>
@@ -40,13 +43,12 @@
 				<td><%=repas.getDate().format(formatter)%></td>
 				<td><%=repas.getHeure()%></td>
 				<td>
-				<%if(repas.getListeAliments()!=null && repas.getListeAliments().size()>0 && repas.getListeAliments().get(0).getIdAliment()!=0){ %>
 				<a href="<%=request.getContextPath()%>/repas?id=<%=repas.getIdRepas()%>">voir contenu</a>
-				<%}else{ %>
-				<a class="disabled" href="<%=request.getContextPath()%>/repas?id=<%=repas.getIdRepas()%>">voir contenu</a>
-				<%} %></td>
+				</td>
 				</tr>
-				<% if(String.valueOf(repas.getIdRepas()).equals(request.getParameter("id"))){ %>
+				<% 
+		/* 		System.out.println(request.getParameter("id"));  */
+				if(String.valueOf(repas.getIdRepas()).equals(request.getParameter("id"))){ %>
 				<tr>
 				<td colspan=3>
 				<ul>
@@ -80,7 +82,21 @@
 							href="<%=request.getContextPath()%>/repas"><input
 							type="button" value="Réinitialiser" /></a>
 					</form>
-
+				<%
+			List<Integer> listeCodesErreur = (List<Integer>)request.getAttribute("listeCodesErreur");
+			if(listeCodesErreur!=null)
+			{
+		%>
+				<p class="error-msg">Erreur, le repas n'a pas pu être affiché :</p>
+				<ul>
+		<%
+				for(int codeErreur:listeCodesErreur)
+				{
+		%>
+					<li class="error-msg"><%=LecteurMessage.getMessageErreur(codeErreur)%></li>
+			<% } %>
+			</ul>
+		<% } %>
 				</div>
 			
 					<%
@@ -105,12 +121,18 @@
 					<td><%=repas.getDate().format(formatter)%></td>
 					<td><%=repas.getHeure()%></td> 
 					<td>
-					<%if(repas.getListeAliments()!=null && repas.getListeAliments().size()>0){ %>
-					<a href="<%=request.getContextPath()%>/repas?id=<%=repas.getIdRepas()%>&dateChoisie<%=request.getParameter("date")%>">voir contenu</a>
-					<%} %>
+				<%-- 	<%if(repas.getListeAliments()!=null && repas.getListeAliments().size()>0){ %> --%>
+					<a href="<%=request.getContextPath()%>/repas?iddate=<%=repas.getIdRepas()+"-"+request.getParameter("date")%>">voir contenu</a>
+				<%--  	<%} %>  --%>
 					</td>
 					</tr>
-					<% if(String.valueOf(repas.getIdRepas()).equals(request.getParameter("id"))&&String.valueOf(repas.getDate()).equals(request.getParameter("dateChoisie"))){ %>
+					<% 
+					//TODO !!!!
+				 	System.out.println("concat "+String.valueOf(repas.getIdRepas())+"-"+String.valueOf(repas.getDate())); 
+					System.out.println("param iddate "+request.getParameter("iddate"));  
+					System.out.println("jsp - repas date  " + repas.getDate());
+					if((String.valueOf(repas.getIdRepas())+"-"+String.valueOf(repas.getDate())).equals(request.getParameter("iddate"))){ %>
+					
 					<tr>
 					<td colspan=3>
 					<ul>
@@ -126,12 +148,13 @@
 					}%>
 				</tbody>
 				</table>
-					<%
-					if ((String) request.getAttribute("repasParDate") == "false") {
+			
+					<%	}else if ((String) request.getAttribute("repasParDate") == "false") {
 					%>
 					<p>aucune repas enregistré à cette date!</p>
 					<%
-					}}
+					}
+					
 					%>
 			
 			</div>

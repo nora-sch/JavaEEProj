@@ -9,17 +9,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Ajouter repas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 <!-- Custom styles for this template -->
 <style>
   <%@ include file="../../css/style.css"%>
   </style> 
 </head>
 <body>
-	<header></header>
+	<header><h1 class="page-title">AJOUT DE REPAS</h1></header>
 	<main>
 		<div class="main-wrapper">
 			<div class="form-wrapper">
-				<h3>AJOUT</h3>
+				
 	
 				<form action="<%=request.getContextPath()%>/ajoutrepas"
 					method="post">
@@ -28,8 +31,8 @@
 						name="date" value="<%=request.getParameter("date")%>" /> <br />
 					<label for="heure">Heure : </label> <input type="time" id="heure"
 						name="heure" value="<%=request.getParameter("heure")%>" /> <br />
-					<label for="aliments">Aliments : </label>
-					<textarea id="aliments" name="aliments"><%=request.getParameter("aliments") != null ? request.getParameter("aliments") : ""%></textarea>
+					<label for="aliments">Aliments : 
+					<textarea id="aliments" name="aliments"><%=request.getParameter("aliments") != null ? request.getParameter("aliments") : ""%></textarea></label>
 					<br /> <input type="submit" value="Valider" /> <a
 						href="<%=request.getContextPath()%>/ajoutrepas"><input
 						type="button" value="Effacer" /></a>
@@ -59,9 +62,10 @@
 				<p><%=repas.getHeure()%></p>
 				<ul>
 				<% for(Aliment aliment : repas.getListeAliments()){
-					%>
+				if(!aliment.getNom().equals("")){	%>
 					<li><%=aliment.getNom()%></li>
-				<% }%>
+				<% }
+				}%>
 				</ul>
 				<%
 				}

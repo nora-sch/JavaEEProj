@@ -48,12 +48,14 @@ public class RepasDAOJdbcImpl implements RepasDAO{
 
 				pstmt = cnx.prepareStatement(INSERT_ALIMENTS, PreparedStatement.RETURN_GENERATED_KEYS);
 				for(Aliment aliment : repas.getListeAliments()) {
-					pstmt.setString(1, aliment.getNom());
-					pstmt.setInt(2, repas.getIdRepas());
-					pstmt.executeUpdate();
-					rs = pstmt.getGeneratedKeys();
-					if(rs.next()) {
-						aliment.setIdAliment(rs.getInt(1));
+					if(!aliment.getNom().equals("")) {
+						pstmt.setString(1, aliment.getNom());
+						pstmt.setInt(2, repas.getIdRepas());
+						pstmt.executeUpdate();
+						rs = pstmt.getGeneratedKeys();
+						if(rs.next()) {
+							aliment.setIdAliment(rs.getInt(1));
+						}
 					}
 				}
 				rs.close();

@@ -69,7 +69,12 @@ public class ServletAjouterRepas extends HttpServlet {
 		if(aliments==null || aliments.trim().isEmpty()){
 			listeErreurs.add(CodesResultatServlets.FORMAT_REPAS_ALIMENTS_ERREUR);
 		}
-
+		if(aliments!=null) {
+			System.out.println(aliments);
+			if(!aliments.matches(("^[\\pL\\pM\\p{Zs}, ]+$"))) {
+				listeErreurs.add(CodesResultatServlets.FORMAT_REPAS_ALIMENTS_SYNTAXE_ERREUR);
+			}
+		}
 		if(listeErreurs.size()>0) {
 			request.setAttribute("listeCodesErreur", listeErreurs);
 			System.out.println(listeErreurs);
